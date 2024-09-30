@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Data Description</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+
+        /* .header h1 {
+            background: #fff;
+            padding: 20px;
+            text-align: left;
+            font-size: 24px;
+            color: #da4d4d;
+            box-shadow: 0 4px 2px -2px gray;
+        } */
+        h3 {
+
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            color: black;
+            font-size: larger;
+        }
+
+        .tab {
+            display: flex;
+            /* Use flexbox to ensure equal width and proper alignment */
+            background-color: #ccc;
+            height: 100px;
+            /* Set a fixed height for the tab container */
+            padding: 0 5px;
+            margin: 0;
+            /* Remove default margins */
+        }
+
+        .tab button {
+            background-color: inherit;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            /* Each button grows equally to fill the container */
+            transition: 0.3s;
+            font-size: 17px;
+            color: #0b0b0b;
+            font-weight: bold;
+            padding: 20px 10px;
+            /* Adjust padding to control the height of the buttons */
+            text-align: center;
+            margin-right: 2px;
+            /* Optional: add a small right margin if desired */
+            box-sizing: border-box;
+            /* Include padding and border in the element's total width and height */
+        }
+
+        .tab button:last-child {
+            margin-right: 0;
+            /* Remove margin for the last button to avoid overflow */
+        }
+
+        .tab button:hover,
+        .tab button.active {
+            background-color: #0056b3;
+            color: #fff;
+        }
+
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            background-color: #fff;
+            color: #1a1919;
+            box-shadow: 0 2px 5px gray;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        button {
+            background-color: #0056b3;
+            /* Dark blue background */
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        iframe {
+            width: 1000px;
+            height: 750px;
+            display: none;
+            /* Hide initially */
+        }
+
+        .datasetbutton-container {
+            display: flex;
+            /* Aligns buttons horizontally */
+            justify-content: space-around;
+            /* Distributes space evenly around the buttons */
+            margin: 20px;
+            /* Adds margin around the container for better spacing */
+        }
+
+        .datasetbutton {
+            background-color: #0056b3;
+            /* Dark blue background */
+            color: white;
+            /* White text */
+            padding: 10px 20px;
+            /* Padding inside the button */
+            border: none;
+            /* No border */
+            cursor: pointer;
+            /* Pointer cursor on hover */
+            text-decoration: none;
+            /* Removes underline from links */
+            font-size: 16px;
+            /* Font size */
+            text-align: center;
+            /* Centers text */
+            width: 20%;
+            /* Equal width for each button */
+        }
+
+        .datasetbutton:hover {
+            background-color: #003580;
+            /* Darker blue on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DATA DESCRIPTION</h1>
+        </div>
+        <div class="tab">
+            <button class="tablinks" onclick="openInfo(event, 'datasetoverview')">Dataset Overview</button>
+            <button class="tablinks" onclick="openInfo(event, 'idealist')">Idealist Dataset</button>
+            <button class="tablinks" onclick="openInfo(event, 'inpatient')">UF CHoRUS Dataset (INPATIENT)</button>
+            <button class="tablinks" onclick="openInfo(event, 'sdoh')">SDOH Dataset</button>
+        </div>
+        <div id="datasetoverview" class="tabcontent">
+            <h3>Dataset Overview</h3>
+            <p>Datasets are the most important resources we have gained and maintained. Different datasets have various
+                subjects, features and outcomes. Understand the datasets by reading the datasets descriptions, data
+                dictionaries and data workflows will always be the first step to start the research.</p>
+            <h3>Dataset Statistics</h3>
+            <a
+                href="https://prisma-presearch.github.io/ic3-online-documentation/docs/category/datasets">https://prisma-presearch.github.io/ic3-online-documentation/docs/category/datasets</a>
+            <h3>PrismaP Data Architecture Flow</h3>
+            <img src="images\PrismaP Data Architecture.drawio (1).png" alt="architecture-img" width="800">
+            <h3>Datasets Workflow​</h3>
+            <p>IC3 data core takes the responsibility to manage the data collected from UF-IDR(Integrated Data
+                Registry). All data will be processed and stored with below brief workflow.</p>
+            <img src="images\dataset.png" alt="workflow" width="800">
+            <p>Researchers are recommended to query the structured databases and download the sub-cohort for each
+                project.
+                Please feel free to contact with IC3 data core about any datasets problems.</p>
+        </div>
+
+        <div id="idealist" class="tabcontent">
+            <h3>Datasets Introduction</h3>
+            <p>Retrospective temporal dataset for adult patients who underwent inpatient surgical procedure at UFH
+                between 1/1/2012 and 10/15/2020.</p>
+            <h3>Key Information</h3>
+            <img src="images\idealist.png" alt="idealist_dataset" width="700" height="600">
+            <div class="button-container">
+                <h3>Dataset Dictionary</h3>
+                <button id="showHtml">Detailed view of Idealist Table dictionary</button>
+                <button id="downloadDataset">Download Dictionary</button>
+                <iframe id="htmlViewer" style="display:none;" width="1000" height="750"></iframe>
+            </div>
+        </div>
+        <div id="sdoh" class="tabcontent">
+            <h3>Dataset Introduction​</h3>
+            <p>The SDOH database serves as a source for the following projects:</p>
+            <ul>
+                <li><a href="https://prismap.medicine.ufl.edu/research/chorus/">CHoRUS</a></li>
+                <li><a href="https://prismap.medicine.ufl.edu/research/idealist/">Idealist</a></li>
+                <li><a href="https://prismap.medicine.ufl.edu/research/mend-aki/">MEnD-AKI</a></li>
+            </ul>
+            <button id="downloadsdoh">Download SDOH Data Dictionary</button>
+        </div>
+        <div id="inpatient" class="tabcontent">
+            <h3>Datasets Introduction​</h3>
+            <p>Inpatient database (UF Chorus Databank) is a huge dataset which includes all related data for Inpatient
+                encounters from 2012-2028 from all sites of UF Health Shands.
+                The databank covers various types of data.
+                EHR (Electronic Health Record) data
+                Notes data (clinical notes, discharge summary, etc.)
+                Image data (DICOM format)
+                Chest X-ray
+                CT scans
+                MRI and Etc
+                Waveform data (Vital signals, ECG, EEG, etc.)</p>
+            <h3>Key Information</h3>
+            <img src="images\UF Inpatient.png" alt="idealist_dataset" width="700" height="600">
+            <h3>Data Access​</h3>
+            <p>The EHR and Notes data are stored in a relational database (SQL server). To access the database, you need
+                to be in the UF Health Network. Please check Tutorials to get the details about database access.</h3>
+            </p>
+            <h3>EHR Data​</h3>
+            <p>
+                EHR data is cleaned and stored in a relational database(SQL server) with OMOP CDM format. Please check
+                <a href="https://ohdsi.github.io/CommonDataModel/">OMOP CDM</a> for more details about the data format.
+                The Inpatient database serves as a source for the following projects
+                <a href="https://prismap.medicine.ufl.edu/research/chorus/">CHoRUS</a>
+                <a href="https://prismap.medicine.ufl.edu/research/jax-dt/">JAX Digital Twin</a>
+            </p>
+            <div class="button-container">
+                <h3>Dataset Dictionary</h3>
+                <button id="ufinpatientHtml">Detailed view of CHoRUS Table dictionary</button>
+                <!-- iframe for CHoRUS, correctly placed inside its tab content -->
+                <iframe id="ufinpatientHtmlviewer" style="display:none;" width="1000" height="750"></iframe>
+            </div>
+        </div>
+        <iframe id="ufinpatientHtmlviewer"></iframe>
+    </div>
+
+    </div>
+
+    </div>
+    <script>
+        function openInfo(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        document.getElementById('showHtml').onclick = function () {
+            var iframe = document.getElementById('htmlViewer');
+            // Toggle display logic
+            if (iframe.style.display === 'block') {
+                iframe.style.display = 'none';
+            } else {
+                iframe.style.display = 'block';
+                iframe.src = "docs/IDEALIST DatasetView (1).html";
+            }
+        };
+
+        document.getElementById('ufinpatientHtml').onclick = function () {
+            var iframe = document.getElementById('ufinpatientHtmlviewer');
+            // Toggle display logic
+            if (iframe.style.display === 'block') {
+                iframe.style.display = 'none';
+            } else {
+                iframe.style.display = 'block';
+                iframe.src = "docs/CHoRUS DatasetView (1).html";
+            }
+        };
+
+
+        document.getElementById('downloadDataset').onclick = function () {
+            window.location.href = 'docs/IDEALIST.xlsx';
+        };
+        document.getElementById('downloadsdoh').onclick = function () {
+            window.location.href = 'docs/SDOH_variables.xlsx';
+        };
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementsByClassName("tablinks")[0].click();
+        });
+    </script>
+</body>
+
+</html>

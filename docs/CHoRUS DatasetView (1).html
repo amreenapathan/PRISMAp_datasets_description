@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Display</title>
+    </head>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+
+        #data-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .category-description {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: transparent; /* No background color */
+            border: none; /* Remove border if any */
+        }
+
+
+        .category-title {
+            font-size: 2em;
+            font-weight: bold;
+            color: #004794; /* Title color */
+            text-align: center;
+            margin: 0; /* Remove margin to fit the container */
+            padding: 20px 0; /* Add padding for better spacing */
+        }
+        .category-subtitle {
+            font-size: 1.2em;
+            color: #004794;
+            margin-top: 5px;
+            text-align: center; /* Center the subtitle */
+        }
+
+
+        .category-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+
+        .category-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 4px;
+            color: #000000;
+            transition: background-color 0.3s ease;
+        }
+
+
+        .category-name:hover {
+            opacity: 0.8;
+        }
+
+
+        .table-container {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+
+        .table-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #e6f7ff;
+            transition: background-color 0.3s ease;
+        }
+
+
+        .table-name:hover {
+            background-color: #E5F2FF;
+        }
+
+
+        .table-description {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+
+        thead {
+            background-color: #E0F1FF;
+            color: #242424;
+        }
+
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+
+        th {
+            font-weight: bold;
+        }
+
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+
+        tr:hover {
+            background-color: #e6f7ff;
+        }
+    </style>
+
+<body>
+    <div id="data-container">
+        <div class="category-description">
+            <h2 class="category-title">CHoRUS Table Dictionary</h2>
+            <p class="category-subtitle">Detailed View of Tables and their Columns</p>
+        </div>
+        
+        <script>
+        // Define a list of colors for categories
+        const categoryColors = [
+            '#FF9999', // Light red
+            '#66B3FF', // Light blue
+            '#00BFAE', // Dark green
+            '#A8D4FF', // light blue
+            '#E372AB', // Medium purple
+            '#FF9F29', // Dark orange
+            '#8B4513'  // Medium dark brown
+        ];
+
+
+        // Fetch the JSON data from the file
+        fetch('https://raw.githubusercontent.com/Prisma-pResearch/ic3-online-documentation/main/websites/static/meta_CHORUS.json')
+            .then(response => response.json())
+            .then(data => displayData(data))
+            .catch(error => console.error('Error loading JSON:', error));
+
+
+        // Function to display the data
+        function displayData(data) {
+            const container = document.getElementById('data-container');
+
+
+            // Add the single category description
+            const descriptionDiv = document.createElement('div');
+            descriptionDiv.className = 'category-description';
+        //    descriptionDiv.innerHTML = `
+         //       <h1 class="category-title">IDEALIST Table Dictionary</h1>
+         //       <p class="category-subtitle">Detailed View of Tables and their Columns</p>
+         //   `;
+            container.appendChild(descriptionDiv);
+
+
+            data.forEach((category, index) => {
+                const categoryContainer = document.createElement('div');
+                categoryContainer.className = 'category-container';
+                categoryContainer.style.backgroundColor = categoryColors[index % categoryColors.length]; // Apply color
+
+
+                // Create and append category name
+                const categoryName = document.createElement('div');
+                categoryName.className = 'category-name';
+                categoryName.textContent = category.Category_name;
+                categoryName.onclick = () => toggleVisibility(categoryTables);
+
+
+                categoryContainer.appendChild(categoryName);
+
+
+                // Create container for tables
+                const categoryTables = document.createElement('div');
+                categoryTables.className = 'table-container';
+                categoryTables.style.display = 'none'; // Hide tables initially
+
+
+                // Array to keep track of table detail divs
+                const tableDetailsDivs = [];
+
+
+                category.Columns.forEach((table, index) => {
+                    const tableDiv = document.createElement('div');
+                    tableDiv.className = 'table-container';
+
+
+                    const tableName = document.createElement('div');
+                    tableName.className = 'table-name';
+                    tableName.textContent = table.Table_name;
+                    tableName.onclick = () => toggleVisibility(tableDetailsDiv);
+
+
+                    tableDiv.appendChild(tableName);
+
+
+                    const tableDetailsDiv = document.createElement('div');
+                    tableDetailsDiv.className = 'table-details';
+                    tableDetailsDiv.style.display = 'none'; // Ensure details are hidden initially
+
+
+                    const tableDescription = document.createElement('p');
+                    tableDescription.className = 'table-description';
+                    tableDescription.textContent = table.Description;
+
+
+                    const tableElement = document.createElement('table');
+                    const tableHeader = document.createElement('thead');
+                    tableHeader.innerHTML = `
+                        <tr>
+                            <th>Column Name</th>
+                            <th>Column Type</th>
+                            <th>Description</th>
+                            <th>Required</th>
+                            <th>Indicators</th>
+                        </tr>
+                    `;
+                    tableElement.appendChild(tableHeader);
+
+
+                    const tableBody = document.createElement('tbody');
+
+
+                    table.Columns.forEach(column => {
+                        const columnRow = document.createElement('tr');
+                        columnRow.innerHTML = `
+                            <td>${column.Column_name}</td>
+                            <td>${column.Column_Type}</td>
+                            <td>${column.Description}</td>
+                            <td>${column.Required}</td>
+                            <td>${column.Indicators.join(', ')}</td>
+                        `;
+                        tableBody.appendChild(columnRow);
+                    });
+
+
+                    tableElement.appendChild(tableBody);
+                    tableDetailsDiv.appendChild(tableDescription);
+                    tableDetailsDiv.appendChild(tableElement);
+                    tableDiv.appendChild(tableDetailsDiv);
+                    categoryTables.appendChild(tableDiv);
+                });
+
+
+                categoryContainer.appendChild(categoryTables);
+                container.appendChild(categoryContainer);
+            });
+        }
+
+
+        function toggleVisibility(element) {
+            const display = element.style.display;
+            element.style.display = display === 'none' || display === '' ? 'block' : 'none';
+        }
+    </script>
+
+    </div>
+</body>
+</html>
