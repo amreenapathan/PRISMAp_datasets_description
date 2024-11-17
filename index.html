@@ -18,16 +18,7 @@
             padding-top: 20px;
         }
 
-        /* .header h1 {
-            background: #fff;
-            padding: 20px;
-            text-align: left;
-            font-size: 24px;
-            color: #da4d4d;
-            box-shadow: 0 4px 2px -2px gray;
-        } */
         h3 {
-
             font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             color: black;
             font-size: larger;
@@ -35,13 +26,10 @@
 
         .tab {
             display: flex;
-            /* Use flexbox to ensure equal width and proper alignment */
             background-color: #ccc;
             height: 100px;
-            /* Set a fixed height for the tab container */
             padding: 0 5px;
             margin: 0;
-            /* Remove default margins */
         }
 
         .tab button {
@@ -53,29 +41,28 @@
             align-items: center;
             justify-content: center;
             flex-grow: 1;
-            /* Each button grows equally to fill the container */
             transition: 0.3s;
             font-size: 17px;
             color: #0b0b0b;
             font-weight: bold;
             padding: 20px 10px;
-            /* Adjust padding to control the height of the buttons */
             text-align: center;
             margin-right: 2px;
-            /* Optional: add a small right margin if desired */
             box-sizing: border-box;
-            /* Include padding and border in the element's total width and height */
         }
 
         .tab button:last-child {
             margin-right: 0;
-            /* Remove margin for the last button to avoid overflow */
         }
 
         .tab button:hover,
         .tab button.active {
             background-color: #0056b3;
             color: #fff;
+        }
+
+        .tab button:focus {
+            outline: 2px solid #0056b3;
         }
 
         .tabcontent {
@@ -85,65 +72,6 @@
             color: #1a1919;
             box-shadow: 0 2px 5px gray;
         }
-
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        button {
-            background-color: #0056b3;
-            /* Dark blue background */
-            color: white;
-            padding: 10px 20px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        iframe {
-            width: 1000px;
-            height: 750px;
-            display: none;
-            /* Hide initially */
-        }
-
-        .datasetbutton-container {
-            display: flex;
-            /* Aligns buttons horizontally */
-            justify-content: space-around;
-            /* Distributes space evenly around the buttons */
-            margin: 20px;
-            /* Adds margin around the container for better spacing */
-        }
-
-        .datasetbutton {
-            background-color: #0056b3;
-            /* Dark blue background */
-            color: white;
-            /* White text */
-            padding: 10px 20px;
-            /* Padding inside the button */
-            border: none;
-            /* No border */
-            cursor: pointer;
-            /* Pointer cursor on hover */
-            text-decoration: none;
-            /* Removes underline from links */
-            font-size: 16px;
-            /* Font size */
-            text-align: center;
-            /* Centers text */
-            width: 20%;
-            /* Equal width for each button */
-        }
-
-        .datasetbutton:hover {
-            background-color: #003580;
-            /* Darker blue on hover */
-        }
     </style>
 </head>
 
@@ -152,11 +80,11 @@
         <div class="header">
             <h1>DATA DESCRIPTION</h1>
         </div>
-        <div class="tab">
-            <button class="tablinks" onclick="openInfo(event, 'datasetoverview')">Dataset Overview</button>
-            <button class="tablinks" onclick="openInfo(event, 'idealist')">Idealist Dataset</button>
-            <button class="tablinks" onclick="openInfo(event, 'inpatient')">UF CHoRUS Dataset (INPATIENT)</button>
-            <button class="tablinks" onclick="openInfo(event, 'sdoh')">SDOH Dataset</button>
+        <div class="tab" role="tablist">
+            <button class="tablinks" tabindex="0" onclick="openInfo(event, 'datasetoverview')">Dataset Overview</button>
+            <button class="tablinks" tabindex="1" onclick="openInfo(event, 'idealist')">Idealist Dataset</button>
+            <button class="tablinks" tabindex="2" onclick="openInfo(event, 'inpatient')">UF CHoRUS Dataset (INPATIENT)</button>
+            <button class="tablinks" tabindex="3" onclick="openInfo(event, 'sdoh')">SDOH Dataset</button>
         </div>
         <div id="datasetoverview" class="tabcontent">
             <h3>Dataset Overview</h3>
@@ -233,11 +161,6 @@
                 <iframe id="ufinpatientHtmlviewer" style="display:none;" width="1000" height="750"></iframe>
             </div>
         </div>
-        <iframe id="ufinpatientHtmlviewer"></iframe>
-    </div>
-
-    </div>
-
     </div>
     <script>
         function openInfo(evt, tabName) {
@@ -252,8 +175,22 @@
             }
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
+            evt.currentTarget.focus();
         }
 
+        document.addEventListener("keydown", function (event) {
+            const activeTab = document.querySelector(".tab button.active");
+            const tabs = document.querySelectorAll(".tab button");
+            let index = Array.prototype.indexOf.call(tabs, activeTab);
+
+            if (event.key === "ArrowRight") {
+                index = (index + 1) % tabs.length;
+                tabs[index].click();
+            } else if (event.key === "ArrowLeft") {
+                index = (index - 1 + tabs.length) % tabs.length;
+                tabs[index].click();
+            }
+        });
         document.getElementById('showHtml').onclick = function () {
             var iframe = document.getElementById('htmlViewer');
             // Toggle display logic
@@ -287,7 +224,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementsByClassName("tablinks")[0].click();
         });
+        
     </script>
 </body>
-
 </html>
